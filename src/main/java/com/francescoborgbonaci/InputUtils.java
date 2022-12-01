@@ -13,7 +13,7 @@ public class InputUtils {
 
     public static <T> T processFileAsLines(String filePath, Function<List<String>, T> function) throws IOException {
         try (InputStream is = InputUtils.class.getClassLoader().getResourceAsStream(filePath)) {
-            final var lines = new BufferedReader(new InputStreamReader(requireNonNull(is))).lines().toList();
+            final List<String> lines = new BufferedReader(new InputStreamReader(requireNonNull(is))).lines().toList();
             return function.apply(lines);
         }
     }
