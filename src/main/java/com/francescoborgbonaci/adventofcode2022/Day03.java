@@ -2,16 +2,16 @@ package com.francescoborgbonaci.adventofcode2022;
 
 import com.francescoborgbonaci.InputUtils;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.groupingBy;
+import static com.francescoborgbonaci.ListUtils.chunk;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toSet;
 
 public class Day03 {
 
@@ -28,40 +28,43 @@ public class Day03 {
     }
 
     public static Result process(final List<String> lines) {
-        final AtomicInteger chunkCounter = new AtomicInteger();
+        final List<Rucksack> rucksacks = lines.stream().map(Rucksack::new).toList();
 
-        return lines.stream()
-            .map(Rucksack::new)
-            .collect(collectingAndThen(
-                groupingBy(rucksack -> chunkCounter.getAndIncrement() / 3), // chunk elves into groups of 3
-                groupedRucksacks -> groupedRucksacks.values().stream().map(ElfGroup::new)
-            ))
-            .map(elfGroup -> new Result(elfGroup.getPrioritySumOfSharedItems(), elfGroup.getPriorityOfGroupBadgeItem()))
+        return chunk(rucksacks, 3)
+            .stream().map(ElfGroup::new)
+            .map(ElfGroup::toResult)
             .reduce(new Result(0, 0), Result::add);
     }
 
     record Result(int duplicateItemPriority, int groupBadgePriority) {
         public Result add(Result other) {
-            return new Result(duplicateItemPriority + other.duplicateItemPriority, groupBadgePriority + other.groupBadgePriority);
+            return new Result(
+                duplicateItemPriority + other.duplicateItemPriority,
+                groupBadgePriority + other.groupBadgePriority
+            );
         }
     }
 
-    record ElfGroup(List<Rucksack> rucksacks) {
+    record ElfGroup(Collection<Rucksack> rucksacks) {
         public int getPrioritySumOfSharedItems() {
-            return rucksacks.stream().map(Rucksack::getSharedItem).mapToInt(PRIORITIES::get).sum();
+            return rucksacks.stream().map(Rucksack::getSharedItemInRucksack).mapToInt(PRIORITIES::get).sum();
         }
 
         public int getPriorityOfGroupBadgeItem() {
-            final var sharedItem = getSharedItem(rucksacks.stream().map(Rucksack::contents).toList());
+            final Character sharedItem = getSharedItem(rucksacks.stream().map(Rucksack::contents).toList());
             return PRIORITIES.get(sharedItem);
+        }
+
+        public Result toResult() {
+            return new Result(getPrioritySumOfSharedItems(), getPriorityOfGroupBadgeItem());
         }
     }
 
     record Rucksack(String contents) {
-        public char getSharedItem() {
-            final var compartment1 = contents.substring(0, contents.length() / 2);
-            final var compartment2 = contents.substring(contents.length() / 2);
-            return Day03.getSharedItem(List.of(compartment1, compartment2));
+        public char getSharedItemInRucksack() {
+            final String compartment1 = contents.substring(0, contents.length() / 2);
+            final String compartment2 = contents.substring(contents.length() / 2);
+            return getSharedItem(List.of(compartment1, compartment2));
         }
     }
 
@@ -74,14 +77,14 @@ public class Day03 {
     }
 
     private static Set<Character> toCharacterSet(String string) {
-        return string.chars().mapToObj(value -> (char) value).collect(Collectors.toSet());
+        return string.chars().mapToObj(value -> (char) value).collect(toSet());
     }
 
     private static Character getSharedItem(List<String> strings) {
         final String sharedString = strings.stream().reduce((s1, s2) -> {
             Set<Character> set = toCharacterSet(s1);
             set.retainAll(toCharacterSet(s2));
-            char[] charArray = set.stream().map(Object::toString).collect(Collectors.joining())
+            char[] charArray = set.stream().map(Object::toString).collect(joining())
                 .toCharArray();
             return new String(charArray);
         }).orElseThrow();

@@ -1,10 +1,14 @@
 package com.francescoborgbonaci;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class ListUtils {
 
@@ -22,6 +26,11 @@ public class ListUtils {
 
     public static <I, O> List<O> mapListEntries(List<I> list, Function<I, O> mapper) {
         return list.stream().map(mapper).toList();
+    }
+
+    public static <T> Collection<List<T>> chunk(Collection<T> list, int chunkSize) {
+        final AtomicInteger atomicInteger = new AtomicInteger();
+        return list.stream().collect(groupingBy(t -> atomicInteger.getAndIncrement() / chunkSize)).values();
     }
 
 }
