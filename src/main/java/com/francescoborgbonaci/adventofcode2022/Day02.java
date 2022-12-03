@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static com.francescoborgbonaci.adventofcode2022.Day2.Hand.PAPER;
-import static com.francescoborgbonaci.adventofcode2022.Day2.Hand.ROCK;
-import static com.francescoborgbonaci.adventofcode2022.Day2.Hand.SCISSORS;
-import static com.francescoborgbonaci.adventofcode2022.Day2.HandResult.DRAW;
-import static com.francescoborgbonaci.adventofcode2022.Day2.HandResult.LOSE;
-import static com.francescoborgbonaci.adventofcode2022.Day2.HandResult.WIN;
+import static com.francescoborgbonaci.adventofcode2022.Day02.Hand.PAPER;
+import static com.francescoborgbonaci.adventofcode2022.Day02.Hand.ROCK;
+import static com.francescoborgbonaci.adventofcode2022.Day02.Hand.SCISSORS;
+import static com.francescoborgbonaci.adventofcode2022.Day02.HandResult.DRAW;
+import static com.francescoborgbonaci.adventofcode2022.Day02.HandResult.LOSE;
+import static com.francescoborgbonaci.adventofcode2022.Day02.HandResult.WIN;
 
-public class Day2 {
+public class Day02 {
 
     record Result(int part1Score, int part2Score) {
         public Result add(Result other) {
@@ -24,14 +24,14 @@ public class Day2 {
     }
 
     public static void main(String[] args) throws Exception {
-        final Result result = InputUtils.processFileAsLines("day2.txt", Day2::process);
+        final Result result = InputUtils.processFileAsLines("day2.txt", Day02::process);
         System.out.println("Part 1: " + result.part1Score());
         System.out.println("Part 2: " + result.part2Score());
     }
 
     public static Result process(final List<String> lines) {
         return lines.stream()
-            .map(Day2::getResultForStrategy)
+            .map(Day02::getResultForStrategy)
             .reduce(new Result(0, 0), Result::add);
     }
 

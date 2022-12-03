@@ -9,16 +9,16 @@ import static java.util.Collections.reverseOrder;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
-public class Day1 {
+public class Day01 {
 
     public static void main(String[] args) throws Exception {
-        final ElvesData elvesData = processFileAsLines("day1.txt", Day1::parse);
+        final ElvesData elvesData = processFileAsLines("day1.txt", Day01::process);
 
-        System.out.println("Part 1: " + elvesData.getTotalCaloriesHeldByElfWithMostCalories());
+        System.out.println("Part 1: " + elvesData.getTotalCaloriesHeldByTopNElves(1));
         System.out.println("Part 2: " + elvesData.getTotalCaloriesHeldByTopNElves(3));
     }
 
-    public static ElvesData parse(final List<String> lines) {
+    public static ElvesData process(final List<String> lines) {
         return ListUtils.splitListByPredicate(lines, String::isBlank)
             .stream().map(strings -> ListUtils.mapListEntries(strings, Integer::parseInt))
             .map(Elf::new)
@@ -26,10 +26,6 @@ public class Day1 {
     }
 
     record ElvesData(List<Elf> elves) {
-
-        public Integer getTotalCaloriesHeldByElfWithMostCalories() {
-            return getTotalCaloriesHeldByTopNElves(1);
-        }
 
         public Integer getTotalCaloriesHeldByTopNElves(int n) {
             return elves.stream()
