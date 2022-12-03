@@ -17,38 +17,38 @@ import static io.github.frellibb.adventofcode2022.Day02.HandResult.WIN;
 
 public class Day02 {
 
+    public static void main(String[] args) throws Exception {
+        Result result = InputUtils.processFileAsLines("day2.txt", Day02::process);
+        System.out.println("Part 1: " + result.part1Score());
+        System.out.println("Part 2: " + result.part2Score());
+    }
+
+    public static Result process(List<String> lines) {
+        return lines.stream()
+            .map(Day02::getResultForStrategy)
+            .reduce(new Result(0, 0), Result::add);
+    }
+
     record Result(int part1Score, int part2Score) {
         public Result add(Result other) {
             return new Result(part1Score + other.part1Score, part2Score + other.part2Score);
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        final Result result = InputUtils.processFileAsLines("day2.txt", Day02::process);
-        System.out.println("Part 1: " + result.part1Score());
-        System.out.println("Part 2: " + result.part2Score());
-    }
+    private static Result getResultForStrategy(String strategy) {
+        String[] strategyPart = strategy.split(" ");
 
-    public static Result process(final List<String> lines) {
-        return lines.stream()
-            .map(Day02::getResultForStrategy)
-            .reduce(new Result(0, 0), Result::add);
-    }
+        Hand opponentHand = Hand.parse(strategyPart[0]);
+        Hand yourHand = Hand.parse(strategyPart[1]);
+        Scoring part1Score = getScoring(s -> s.opponentHand() == opponentHand && s.playerHand() == yourHand).orElseThrow();
 
-    private static Result getResultForStrategy(final String strategy) {
-        final String[] strategyPart = strategy.split(" ");
-
-        final Hand opponentHand = Hand.parse(strategyPart[0]);
-        final Hand yourHand = Hand.parse(strategyPart[1]);
-        final Scoring part1Score = getScoring(s -> s.opponentHand() == opponentHand && s.playerHand() == yourHand).orElseThrow();
-
-        final HandResult result = HandResult.parse(strategyPart[1]);
-        final Scoring part2Score = getScoring(s -> s.opponentHand() == opponentHand && s.result() == result).orElseThrow();
+        HandResult result = HandResult.parse(strategyPart[1]);
+        Scoring part2Score = getScoring(s -> s.opponentHand() == opponentHand && s.result() == result).orElseThrow();
 
         return new Result(part1Score.calculateScore(), part2Score.calculateScore());
     }
 
-    private static final List<Scoring> SCORING = List.of(
+    private static List<Scoring> SCORING = List.of(
         new Scoring(ROCK, ROCK, DRAW),
         new Scoring(ROCK, PAPER, LOSE),
         new Scoring(ROCK, SCISSORS, WIN),

@@ -13,9 +13,9 @@ import static java.util.stream.Collectors.groupingBy;
 public class ListUtils {
 
     public static <T> List<List<T>> splitListByPredicate(List<T> list, Predicate<T> predicate) {
-        final int[] indexes = Stream.of(
+        int[] indexes = Stream.of(
             IntStream.of(-1), // start of list
-            IntStream.range(0, list.size()).filter(i -> predicate.test(list.get(i))), // indices of blank lines
+            IntStream.range(0, list.size()).filter(i -> predicate.test(list.get(i))), // indices of lines that match predicate
             IntStream.of(list.size()) // end of list
         ).flatMapToInt(s -> s).toArray();
 
@@ -29,7 +29,7 @@ public class ListUtils {
     }
 
     public static <T> Collection<List<T>> chunk(Collection<T> list, int chunkSize) {
-        final AtomicInteger atomicInteger = new AtomicInteger();
+        AtomicInteger atomicInteger = new AtomicInteger();
         return list.stream().collect(groupingBy(t -> atomicInteger.getAndIncrement() / chunkSize)).values();
     }
 

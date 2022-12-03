@@ -10,7 +10,7 @@ class Day01Test {
 
     @Test
     void sampleData() {
-        final List<String> input = List.of(
+        List<String> input = List.of(
             "1000", "2000", "3000",
             "",
             "4000",
@@ -22,7 +22,7 @@ class Day01Test {
             "10000"
         );
 
-        final Day01.ElvesData result = Day01.process(input);
+        Day01.ElvesData result = Day01.process(input);
         assertThat(result.getTotalCaloriesHeldByTopNElves(1)).isEqualTo(24_000);
         assertThat(result.getTotalCaloriesHeldByTopNElves(2)).isEqualTo(35_000);
         assertThat(result.getTotalCaloriesHeldByTopNElves(3)).isEqualTo(45_000);

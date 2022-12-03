@@ -18,17 +18,21 @@ public class Day03 {
     private static final Map<Character, Integer> PRIORITIES = new HashMap<>();
 
     static {
-        populatePriorities();
+        char start = 'a';
+        IntStream.range(0, 26).forEach(i -> {
+            PRIORITIES.put((char) (start + i), i + 1);
+            PRIORITIES.put((char) (Character.toUpperCase(start) + i), i + 1 + 26);
+        });
     }
 
     public static void main(String[] args) throws Exception {
-        final Result sum = InputUtils.processFileAsLines("day3.txt", Day03::process);
+        Result sum = InputUtils.processFileAsLines("day3.txt", Day03::process);
         System.out.println("Part 1: " + sum.duplicateItemPriority());
         System.out.println("Part 2: " + sum.groupBadgePriority());
     }
 
-    public static Result process(final List<String> lines) {
-        final List<Rucksack> rucksacks = lines.stream().map(Rucksack::new).toList();
+    public static Result process(List<String> lines) {
+        List<Rucksack> rucksacks = lines.stream().map(Rucksack::new).toList();
 
         return ListUtils.chunk(rucksacks, 3)
             .stream().map(ElfGroup::new)
@@ -51,7 +55,7 @@ public class Day03 {
         }
 
         public int getPriorityOfGroupBadgeItem() {
-            final Character sharedItem = getSharedItem(rucksacks.stream().map(Rucksack::contents).toList());
+            Character sharedItem = getCommonCharacter(rucksacks.stream().map(Rucksack::contents).toList());
             return PRIORITIES.get(sharedItem);
         }
 
@@ -62,26 +66,18 @@ public class Day03 {
 
     record Rucksack(String contents) {
         public char getSharedItemInRucksack() {
-            final String compartment1 = contents.substring(0, contents.length() / 2);
-            final String compartment2 = contents.substring(contents.length() / 2);
-            return getSharedItem(List.of(compartment1, compartment2));
+            String compartment1 = contents.substring(0, contents.length() / 2);
+            String compartment2 = contents.substring(contents.length() / 2);
+            return getCommonCharacter(List.of(compartment1, compartment2));
         }
-    }
-
-    private static void populatePriorities() {
-        final char start = 'a';
-        IntStream.range(0, 26).forEach(i -> {
-            PRIORITIES.put((char) (start + i), i + 1);
-            PRIORITIES.put((char) (Character.toUpperCase(start) + i), i + 1 + 26);
-        });
     }
 
     private static Set<Character> toCharacterSet(String string) {
         return string.chars().mapToObj(value -> (char) value).collect(toSet());
     }
 
-    private static Character getSharedItem(List<String> strings) {
-        final String sharedString = strings.stream().reduce((s1, s2) -> {
+    private static Character getCommonCharacter(List<String> strings) {
+        String sharedString = strings.stream().reduce((s1, s2) -> {
             Set<Character> set = toCharacterSet(s1);
             set.retainAll(toCharacterSet(s2));
             char[] charArray = set.stream().map(Object::toString).collect(joining())

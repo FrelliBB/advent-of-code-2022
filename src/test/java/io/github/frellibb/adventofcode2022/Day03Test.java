@@ -13,7 +13,7 @@ class Day03Test {
 
     @Test
     void sampleData() {
-        final List<String> input = List.of(
+        List<String> input = List.of(
             "vJrwpWtwJgWrhcsFMMfFFhFp",
             "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
             "PmmdzqPrVvPwwTWBwg",
@@ -21,7 +21,7 @@ class Day03Test {
             "ttgJtRGJQctTZtZT",
             "CrZsJsPPZsGzwwsLwLmpwMDw"
         );
-        final Result result = process(input);
+        Result result = process(input);
 
         assertThat(new Rucksack("vJrwpWtwJgWrhcsFMMfFFhFp").getSharedItemInRucksack()).isEqualTo('p');
         assertThat(result.duplicateItemPriority()).isEqualTo(157);
