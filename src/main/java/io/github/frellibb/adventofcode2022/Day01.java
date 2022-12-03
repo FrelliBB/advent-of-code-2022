@@ -1,10 +1,10 @@
-package com.francescoborgbonaci.adventofcode2022;
+package io.github.frellibb.adventofcode2022;
 
-import com.francescoborgbonaci.ListUtils;
+import io.github.frellibb.ListUtils;
 
 import java.util.List;
 
-import static com.francescoborgbonaci.InputUtils.processFileAsLines;
+import static io.github.frellibb.InputUtils.processFileAsLines;
 import static java.util.Collections.reverseOrder;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;

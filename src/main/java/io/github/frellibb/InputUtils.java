@@ -1,4 +1,4 @@
-package com.francescoborgbonaci;
+package io.github.frellibb;
 
 import java.io.BufferedReader;
 import java.io.IOException;

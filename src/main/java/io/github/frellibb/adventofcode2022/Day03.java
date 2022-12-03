@@ -1,6 +1,7 @@
-package com.francescoborgbonaci.adventofcode2022;
+package io.github.frellibb.adventofcode2022;
 
-import com.francescoborgbonaci.InputUtils;
+import io.github.frellibb.InputUtils;
+import io.github.frellibb.ListUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static com.francescoborgbonaci.ListUtils.chunk;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toSet;
 
@@ -30,7 +30,7 @@ public class Day03 {
     public static Result process(final List<String> lines) {
         final List<Rucksack> rucksacks = lines.stream().map(Rucksack::new).toList();
 
-        return chunk(rucksacks, 3)
+        return ListUtils.chunk(rucksacks, 3)
             .stream().map(ElfGroup::new)
             .map(ElfGroup::toResult)
             .reduce(new Result(0, 0), Result::add);

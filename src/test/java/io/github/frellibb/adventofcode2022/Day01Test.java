@@ -1,11 +1,9 @@
-package com.francescoborgbonaci.adventofcode2022;
+package io.github.frellibb.adventofcode2022;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.francescoborgbonaci.adventofcode2022.Day01.ElvesData;
-import static com.francescoborgbonaci.adventofcode2022.Day01.process;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class Day01Test {
@@ -24,7 +22,7 @@ class Day01Test {
             "10000"
         );
 
-        final ElvesData result = process(input);
+        final Day01.ElvesData result = Day01.process(input);
         assertThat(result.getTotalCaloriesHeldByTopNElves(1)).isEqualTo(24_000);
         assertThat(result.getTotalCaloriesHeldByTopNElves(2)).isEqualTo(35_000);
         assertThat(result.getTotalCaloriesHeldByTopNElves(3)).isEqualTo(45_000);

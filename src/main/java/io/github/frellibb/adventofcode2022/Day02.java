@@ -1,6 +1,6 @@
-package com.francescoborgbonaci.adventofcode2022;
+package io.github.frellibb.adventofcode2022;
 
-import com.francescoborgbonaci.InputUtils;
+import io.github.frellibb.InputUtils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static com.francescoborgbonaci.adventofcode2022.Day02.Hand.PAPER;
-import static com.francescoborgbonaci.adventofcode2022.Day02.Hand.ROCK;
-import static com.francescoborgbonaci.adventofcode2022.Day02.Hand.SCISSORS;
-import static com.francescoborgbonaci.adventofcode2022.Day02.HandResult.DRAW;
-import static com.francescoborgbonaci.adventofcode2022.Day02.HandResult.LOSE;
-import static com.francescoborgbonaci.adventofcode2022.Day02.HandResult.WIN;
+import static io.github.frellibb.adventofcode2022.Day02.Hand.PAPER;
+import static io.github.frellibb.adventofcode2022.Day02.Hand.ROCK;
+import static io.github.frellibb.adventofcode2022.Day02.Hand.SCISSORS;
+import static io.github.frellibb.adventofcode2022.Day02.HandResult.DRAW;
+import static io.github.frellibb.adventofcode2022.Day02.HandResult.LOSE;
+import static io.github.frellibb.adventofcode2022.Day02.HandResult.WIN;
 
 public class Day02 {
 

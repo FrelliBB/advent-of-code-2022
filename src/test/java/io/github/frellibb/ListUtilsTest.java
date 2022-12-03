@@ -1,4 +1,4 @@
-package com.francescoborgbonaci;
+package io.github.frellibb;
 
 import org.junit.jupiter.api.Test;
 

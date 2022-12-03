@@ -1,12 +1,12 @@
-package com.francescoborgbonaci.adventofcode2022;
+package io.github.frellibb.adventofcode2022;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.francescoborgbonaci.adventofcode2022.Day03.Result;
-import static com.francescoborgbonaci.adventofcode2022.Day03.Rucksack;
-import static com.francescoborgbonaci.adventofcode2022.Day03.process;
+import static io.github.frellibb.adventofcode2022.Day03.Result;
+import static io.github.frellibb.adventofcode2022.Day03.Rucksack;
+import static io.github.frellibb.adventofcode2022.Day03.process;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class Day03Test {
