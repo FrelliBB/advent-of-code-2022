@@ -1,7 +1,7 @@
 package io.github.frellibb.adventofcode2022;
 
-import io.github.frellibb.InputUtils;
 import io.github.frellibb.ListUtils;
+import io.github.frellibb.core.Day;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toSet;
 
-public class Day03 {
+public class Day03 implements Day {
 
     private static final Map<Character, Integer> PRIORITIES = new HashMap<>();
 
@@ -25,13 +25,26 @@ public class Day03 {
         });
     }
 
-    public static void main(String[] args) throws Exception {
-        Result sum = InputUtils.processFileAsLines("day3.txt", Day03::process);
-        System.out.println("Part 1: " + sum.duplicateItemPriority());
-        System.out.println("Part 2: " + sum.groupBadgePriority());
+    private static Set<Character> toCharacterSet(String string) {
+        return string.chars().mapToObj(value -> (char) value).collect(toSet());
     }
 
-    public static Result process(List<String> lines) {
+    private static Character getCommonCharacter(List<String> strings) {
+        String sharedString = strings.stream().reduce((s1, s2) -> {
+            Set<Character> set = toCharacterSet(s1);
+            set.retainAll(toCharacterSet(s2));
+            char[] charArray = set.stream().map(Object::toString).collect(joining())
+                .toCharArray();
+            return new String(charArray);
+        }).orElseThrow();
+
+        if (sharedString.length() != 1) {
+            throw new IllegalArgumentException("No common characters among strings " + strings);
+        }
+        return sharedString.charAt(0);
+    }
+
+    public Result process(List<String> lines) {
         List<Rucksack> rucksacks = lines.stream().map(Rucksack::new).toList();
 
         return ListUtils.chunk(rucksacks, 3)
@@ -40,12 +53,22 @@ public class Day03 {
             .reduce(new Result(0, 0), Result::add);
     }
 
-    record Result(int duplicateItemPriority, int groupBadgePriority) {
+    record Result(int duplicateItemPriority, int groupBadgePriority) implements io.github.frellibb.core.Result {
         public Result add(Result other) {
             return new Result(
                 duplicateItemPriority + other.duplicateItemPriority,
                 groupBadgePriority + other.groupBadgePriority
             );
+        }
+
+        @Override
+        public Object part1() {
+            return duplicateItemPriority;
+        }
+
+        @Override
+        public Object part2() {
+            return groupBadgePriority;
         }
     }
 
@@ -70,25 +93,6 @@ public class Day03 {
             String compartment2 = contents.substring(contents.length() / 2);
             return getCommonCharacter(List.of(compartment1, compartment2));
         }
-    }
-
-    private static Set<Character> toCharacterSet(String string) {
-        return string.chars().mapToObj(value -> (char) value).collect(toSet());
-    }
-
-    private static Character getCommonCharacter(List<String> strings) {
-        String sharedString = strings.stream().reduce((s1, s2) -> {
-            Set<Character> set = toCharacterSet(s1);
-            set.retainAll(toCharacterSet(s2));
-            char[] charArray = set.stream().map(Object::toString).collect(joining())
-                .toCharArray();
-            return new String(charArray);
-        }).orElseThrow();
-
-        if (sharedString.length() != 1) {
-            throw new IllegalArgumentException("No common characters among strings " + strings);
-        }
-        return sharedString.charAt(0);
     }
 
 }

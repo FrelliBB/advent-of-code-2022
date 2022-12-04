@@ -22,7 +22,7 @@ class Day01Test {
             "10000"
         );
 
-        Day01.ElvesData result = Day01.process(input);
+        Day01.ElvesData result = new Day01().process(input);
         assertThat(result.getTotalCaloriesHeldByTopNElves(1)).isEqualTo(24_000);
         assertThat(result.getTotalCaloriesHeldByTopNElves(2)).isEqualTo(35_000);
         assertThat(result.getTotalCaloriesHeldByTopNElves(3)).isEqualTo(45_000);

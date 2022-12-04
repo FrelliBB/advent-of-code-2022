@@ -1,6 +1,6 @@
 package io.github.frellibb.adventofcode2022;
 
-import io.github.frellibb.InputUtils;
+import io.github.frellibb.core.Day;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,25 +15,19 @@ import static io.github.frellibb.adventofcode2022.Day02.HandResult.DRAW;
 import static io.github.frellibb.adventofcode2022.Day02.HandResult.LOSE;
 import static io.github.frellibb.adventofcode2022.Day02.HandResult.WIN;
 
-public class Day02 {
+public class Day02 implements Day {
 
-    public static void main(String[] args) throws Exception {
-        Result result = InputUtils.processFileAsLines("day2.txt", Day02::process);
-        System.out.println("Part 1: " + result.part1Score());
-        System.out.println("Part 2: " + result.part2Score());
-    }
-
-    public static Result process(List<String> lines) {
-        return lines.stream()
-            .map(Day02::getResultForStrategy)
-            .reduce(new Result(0, 0), Result::add);
-    }
-
-    record Result(int part1Score, int part2Score) {
-        public Result add(Result other) {
-            return new Result(part1Score + other.part1Score, part2Score + other.part2Score);
-        }
-    }
+    private static final List<Scoring> SCORING = List.of(
+        new Scoring(ROCK, ROCK, DRAW),
+        new Scoring(ROCK, PAPER, LOSE),
+        new Scoring(ROCK, SCISSORS, WIN),
+        new Scoring(PAPER, ROCK, WIN),
+        new Scoring(PAPER, PAPER, DRAW),
+        new Scoring(PAPER, SCISSORS, LOSE),
+        new Scoring(SCISSORS, ROCK, LOSE),
+        new Scoring(SCISSORS, PAPER, WIN),
+        new Scoring(SCISSORS, SCISSORS, DRAW)
+    );
 
     private static Result getResultForStrategy(String strategy) {
         String[] strategyPart = strategy.split(" ");
@@ -48,22 +42,14 @@ public class Day02 {
         return new Result(part1Score.calculateScore(), part2Score.calculateScore());
     }
 
-    private static List<Scoring> SCORING = List.of(
-        new Scoring(ROCK, ROCK, DRAW),
-        new Scoring(ROCK, PAPER, LOSE),
-        new Scoring(ROCK, SCISSORS, WIN),
-        new Scoring(PAPER, ROCK, WIN),
-        new Scoring(PAPER, PAPER, DRAW),
-        new Scoring(PAPER, SCISSORS, LOSE),
-        new Scoring(SCISSORS, ROCK, LOSE),
-        new Scoring(SCISSORS, PAPER, WIN),
-        new Scoring(SCISSORS, SCISSORS, DRAW)
-    );
+    private static Optional<Scoring> getScoring(Predicate<Scoring> predicate) {
+        return SCORING.stream().filter(predicate).findAny();
+    }
 
-    record Scoring(Hand playerHand, Hand opponentHand, HandResult result) {
-        public int calculateScore() {
-            return playerHand.getPoints() + result.getPoints();
-        }
+    public Result process(List<String> lines) {
+        return lines.stream()
+            .map(Day02::getResultForStrategy)
+            .reduce(new Result(0, 0), Result::add);
     }
 
     @RequiredArgsConstructor
@@ -104,8 +90,26 @@ public class Day02 {
         }
     }
 
-    private static Optional<Scoring> getScoring(Predicate<Scoring> predicate) {
-        return SCORING.stream().filter(predicate).findAny();
+    record Result(int part1Score, int part2Score) implements io.github.frellibb.core.Result {
+        public Result add(Result other) {
+            return new Result(part1Score + other.part1Score, part2Score + other.part2Score);
+        }
+
+        @Override
+        public Object part1() {
+            return part1Score;
+        }
+
+        @Override
+        public Object part2() {
+            return part2Score;
+        }
+    }
+
+    record Scoring(Hand playerHand, Hand opponentHand, HandResult result) {
+        public int calculateScore() {
+            return playerHand.getPoints() + result.getPoints();
+        }
     }
 
 }

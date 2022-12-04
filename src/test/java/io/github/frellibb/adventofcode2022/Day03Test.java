@@ -6,7 +6,6 @@ import java.util.List;
 
 import static io.github.frellibb.adventofcode2022.Day03.Result;
 import static io.github.frellibb.adventofcode2022.Day03.Rucksack;
-import static io.github.frellibb.adventofcode2022.Day03.process;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class Day03Test {
@@ -21,7 +20,7 @@ class Day03Test {
             "ttgJtRGJQctTZtZT",
             "CrZsJsPPZsGzwwsLwLmpwMDw"
         );
-        Result result = process(input);
+        Result result = new Day03().process(input);
 
         assertThat(new Rucksack("vJrwpWtwJgWrhcsFMMfFFhFp").getSharedItemInRucksack()).isEqualTo('p');
         assertThat(result.duplicateItemPriority()).isEqualTo(157);
