@@ -1,18 +1,19 @@
 package io.github.frellibb.adventofcode2022;
 
-import org.junit.jupiter.api.Test;
+import io.github.frellibb.core.Day;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class Day04Test extends AbstractDayTest {
 
-class Day04Test {
+    @Override
+    Day getDay() {
+        return new Day04();
+    }
 
-    private final Day04 day = new Day04();
-
-    @Test
-    void sampleData() {
-        final var lines = List.of(
+    @Override
+    List<String> example() {
+        return List.of(
             "2-4,6-8",
             "2-3,4-5",
             "5-7,7-9",
@@ -20,10 +21,15 @@ class Day04Test {
             "6-6,4-6",
             "2-6,4-8"
         );
-
-        final var result = day.process(lines);
-        assertThat(result.part1()).isEqualTo(2);
-        assertThat(result.part2()).isEqualTo(4);
     }
 
+    @Override
+    Object expectedPart1Result() {
+        return 2;
+    }
+
+    @Override
+    Object expectedPart2Result() {
+        return 4;
+    }
 }

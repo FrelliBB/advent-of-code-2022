@@ -1,18 +1,19 @@
 package io.github.frellibb.adventofcode2022;
 
-import org.junit.jupiter.api.Test;
+import io.github.frellibb.core.Day;
 
 import java.util.List;
 
-import static io.github.frellibb.adventofcode2022.Day03.Result;
-import static io.github.frellibb.adventofcode2022.Day03.Rucksack;
-import static org.assertj.core.api.Assertions.assertThat;
+class Day03Test extends AbstractDayTest {
 
-class Day03Test {
+    @Override
+    Day getDay() {
+        return new Day03();
+    }
 
-    @Test
-    void sampleData() {
-        List<String> input = List.of(
+    @Override
+    List<String> example() {
+        return List.of(
             "vJrwpWtwJgWrhcsFMMfFFhFp",
             "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
             "PmmdzqPrVvPwwTWBwg",
@@ -20,10 +21,15 @@ class Day03Test {
             "ttgJtRGJQctTZtZT",
             "CrZsJsPPZsGzwwsLwLmpwMDw"
         );
-        Result result = new Day03().process(input);
+    }
 
-        assertThat(new Rucksack("vJrwpWtwJgWrhcsFMMfFFhFp").getSharedItemInRucksack()).isEqualTo('p');
-        assertThat(result.duplicateItemPriority()).isEqualTo(157);
-        assertThat(result.groupBadgePriority()).isEqualTo(70);
+    @Override
+    Object expectedPart1Result() {
+        return 157;
+    }
+
+    @Override
+    Object expectedPart2Result() {
+        return 70;
     }
 }

@@ -1,25 +1,26 @@
 package io.github.frellibb.adventofcode2022;
 
-import io.github.frellibb.ListUtils;
 import io.github.frellibb.core.Day;
-import io.github.frellibb.core.Result;
 
 import java.util.List;
 
+import static io.github.frellibb.ListUtils.mapListEntries;
+import static io.github.frellibb.ListUtils.splitListByPredicate;
 import static java.util.Collections.reverseOrder;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
 public class Day01 implements Day {
 
-    public ElvesData process(List<String> lines) {
-        return ListUtils.splitListByPredicate(lines, String::isBlank)
-            .stream().map(strings -> ListUtils.mapListEntries(strings, Integer::parseInt))
+    public Result process(List<String> lines) {
+        return splitListByPredicate(lines, String::isBlank)
+            .stream()
+            .map(list -> mapListEntries(list, Integer::parseInt))
             .map(Elf::new)
-            .collect(collectingAndThen(toList(), ElvesData::new));
+            .collect(collectingAndThen(toList(), Result::new));
     }
 
-    record ElvesData(List<Elf> elves) implements Result {
+    record Result(List<Elf> elves) implements io.github.frellibb.core.Result {
 
         public Integer getTotalCaloriesHeldByTopNElves(int n) {
             return elves.stream()

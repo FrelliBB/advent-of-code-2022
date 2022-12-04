@@ -1,16 +1,19 @@
 package io.github.frellibb.adventofcode2022;
 
-import org.junit.jupiter.api.Test;
+import io.github.frellibb.core.Day;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class Day01Test extends AbstractDayTest {
 
-class Day01Test {
+    @Override
+    Day getDay() {
+        return new Day01();
+    }
 
-    @Test
-    void sampleData() {
-        List<String> input = List.of(
+    @Override
+    List<String> example() {
+        return List.of(
             "1000", "2000", "3000",
             "",
             "4000",
@@ -21,11 +24,15 @@ class Day01Test {
             "",
             "10000"
         );
-
-        Day01.ElvesData result = new Day01().process(input);
-        assertThat(result.getTotalCaloriesHeldByTopNElves(1)).isEqualTo(24_000);
-        assertThat(result.getTotalCaloriesHeldByTopNElves(2)).isEqualTo(35_000);
-        assertThat(result.getTotalCaloriesHeldByTopNElves(3)).isEqualTo(45_000);
     }
 
+    @Override
+    Object expectedPart1Result() {
+        return 24_000;
+    }
+
+    @Override
+    Object expectedPart2Result() {
+        return 45_000;
+    }
 }
