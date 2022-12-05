@@ -32,6 +32,6 @@ public class Day05Test extends AbstractDayTest {
 
     @Override
     Object expectedPart2Result() {
-        return null;
+        return "MCD";
     }
 }
