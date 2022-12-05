@@ -1,6 +1,7 @@
 package io.github.frellibb.adventofcode2022;
 
 import io.github.frellibb.core.Day;
+import io.github.frellibb.core.Result;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,12 +12,18 @@ public abstract class AbstractDayTest {
 
     @Test
     void examplePart1ShouldMatch() {
-        assertThat(getDay().process(example()).part1()).isEqualTo(expectedPart1Result());
+        assertThat(getResult().part1()).isNotNull();
+        assertThat(getResult().part1()).isEqualTo(expectedPart1Result());
     }
 
     @Test
     void examplePart2ShouldMatch() {
-        assertThat(getDay().process(example()).part2()).isEqualTo(expectedPart2Result());
+        assertThat(getResult().part2()).isNotNull();
+        assertThat(getResult().part2()).isEqualTo(expectedPart2Result());
+    }
+
+    private Result getResult() {
+        return getDay().process(example());
     }
 
     abstract Day getDay();

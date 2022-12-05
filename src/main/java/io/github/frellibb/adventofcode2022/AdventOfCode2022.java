@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class AdventOfCode2022 {
 
-    private static final int CURRENT_DAY = 4;
+    private static final int CURRENT_DAY = 5;
 
     public static void main(String[] args) throws Exception {
 
@@ -17,7 +17,7 @@ public class AdventOfCode2022 {
 
             final var lines = InputUtils.loadLines("day%s.txt".formatted(dayString));
 
-            System.out.println(clazz.getName());
+            System.out.println(clazz.getSimpleName());
             System.out.println(dayInstance.process(lines).print());
         }
     }
