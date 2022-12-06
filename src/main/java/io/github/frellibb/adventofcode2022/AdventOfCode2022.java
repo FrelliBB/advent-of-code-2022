@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class AdventOfCode2022 {
 
-    private static final int CURRENT_DAY = 5;
+    private static final int CURRENT_DAY = 6;
 
     public static void main(String[] args) throws Exception {
 
