@@ -1,5 +1,6 @@
 package io.github.frellibb.adventofcode2022;
 
+import io.github.frellibb.core.BasicResult;
 import io.github.frellibb.core.Day;
 import io.github.frellibb.core.Result;
 
@@ -14,17 +15,7 @@ public class Day06 implements Day {
         int part1 = getMarkerIndex(input, 4);
         int part2 = getMarkerIndex(input, 14);
 
-        return new Result() {
-            @Override
-            public Object part1() {
-                return part1;
-            }
-
-            @Override
-            public Object part2() {
-                return part2;
-            }
-        };
+        return new BasicResult(part1, part2);
     }
 
     private int getMarkerIndex(final String input, int markerLength) {

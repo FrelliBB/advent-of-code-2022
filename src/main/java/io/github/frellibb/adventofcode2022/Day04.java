@@ -1,6 +1,8 @@
 package io.github.frellibb.adventofcode2022;
 
+import io.github.frellibb.core.BasicResult;
 import io.github.frellibb.core.Day;
+import io.github.frellibb.core.Result;
 import org.apache.commons.lang3.Range;
 
 import java.util.List;
@@ -11,14 +13,15 @@ public class Day04 implements Day {
 
     @Override
     public Result process(final List<String> lines) {
-        final var numberOfFullyContainedRanges = lines.stream().map(line -> Ranges.from(line))
-            .filter(ranges -> ranges.fullyContainsAnother())
+        final var numberOfFullyContainedRanges = lines.stream().map(Ranges::from)
+            .filter(Ranges::fullyContainsAnother)
             .count();
 
-        final var numberOfOverlappingRanges = lines.stream().map(line -> Ranges.from(line))
-            .filter(ranges -> ranges.overlap())
+        final var numberOfOverlappingRanges = lines.stream().map(Ranges::from)
+            .filter(Ranges::overlap)
             .count();
-        return new Result((int) numberOfFullyContainedRanges, (int) numberOfOverlappingRanges);
+
+        return new BasicResult(numberOfFullyContainedRanges, numberOfOverlappingRanges);
     }
 
     record Ranges(Range<Integer> range1, Range<Integer> range2) {
@@ -37,19 +40,6 @@ public class Day04 implements Day {
 
         public boolean overlap() {
             return range1.isOverlappedBy(range2);
-        }
-    }
-
-    record Result(int numberOfFullyContainedRanges, int overlappingRanges) implements io.github.frellibb.core.Result {
-
-        @Override
-        public Object part1() {
-            return numberOfFullyContainedRanges;
-        }
-
-        @Override
-        public Object part2() {
-            return overlappingRanges;
         }
     }
 

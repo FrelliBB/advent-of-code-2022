@@ -7,55 +7,46 @@ import io.github.frellibb.adventofcode2022.Day07.Commands.ListedDirectory;
 import io.github.frellibb.adventofcode2022.Day07.Commands.ListedFile;
 import io.github.frellibb.adventofcode2022.Day07.FileSystem.Directory;
 import io.github.frellibb.adventofcode2022.Day07.FileSystem.File;
+import io.github.frellibb.core.BasicResult;
 import io.github.frellibb.core.Day;
 import io.github.frellibb.core.Result;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Day07 implements Day {
 
-    private static final long MAX_SIZE = 100_000L;
-    private static final long TOTAL_DISK_SPACE = 70_000_000;
-    private static final long REQUIRED_SPACE = 30_000_000;
+    private static long MAX_SIZE = 100_000L;
+    private static long TOTAL_DISK_SPACE = 70_000_000;
+    private static long REQUIRED_SPACE = 30_000_000;
 
     @Override
-    public Result process(final List<String> lines) {
+    public Result process(List<String> lines) {
         Directory root = parseRoot(lines);
-        final var allDirectories = findAllDirectories(root);
-        final var part1 = allDirectories.stream().map(Directory::calculateSize)
-            .filter(aLong -> aLong <= MAX_SIZE)
+        List<Directory> allDirectories = findAllDirectories(root);
+
+        long part1 = allDirectories.stream()
+            .map(Directory::calculateSize)
+            .filter(size -> size <= MAX_SIZE)
             .reduce(0L, Long::sum);
 
-        var rootSize = root.calculateSize();
-        var availableSpace = TOTAL_DISK_SPACE - rootSize;
-        var spaceWeNeedToFree = REQUIRED_SPACE - availableSpace;
+        long rootSize = root.calculateSize();
+        long availableSpace = TOTAL_DISK_SPACE - rootSize;
+        long spaceWeNeedToFree = REQUIRED_SPACE - availableSpace;
 
-        final var min = allDirectories.stream()
+        long part2 = allDirectories.stream()
             .map(Directory::calculateSize)
             .filter(size -> size >= spaceWeNeedToFree)
             .min(Long::compareTo)
             .orElseThrow();
 
-        return new Result() {
-
-            @Override
-            public Object part1() {
-                return part1;
-            }
-
-            @Override
-            public Object part2() {
-                return min;
-            }
-        };
+        return new BasicResult(part1, part2);
     }
 
     private Directory parseRoot(List<String> lines) {
+        Directory workingDirectory = new Directory("/", new ArrayList<>(), null);
 
-        Directory root = new Directory("/", new ArrayList<>(), null);
-        final List<Commands.Command> commands = lines.stream().map(s -> switch (s) {
+        List<Commands.Command> commands = lines.stream().map(s -> switch (s) {
             case "$ cd /" -> new GoToRoot();
             case "$ cd .." -> new Commands.GoBack();
             case "$ ls" -> new Commands.ListNodes();
@@ -64,15 +55,15 @@ public class Day07 implements Day {
             case String st -> new ListedFile(st.split(" ")[1], Long.parseLong(st.split(" ")[0]));
         }).map(record -> (Command) record).toList();
 
-        for (final Command command : commands) {
-            root = command.update(root);
+        for (Command command : commands) {
+            workingDirectory = command.processCommand(workingDirectory);
         }
 
-        return new GoToRoot().update(root);
+        return new GoToRoot().processCommand(workingDirectory);
     }
 
     private List<Directory> findAllDirectories(Directory root) {
-        final var dirs = new ArrayList<>(List.of(root));
+        ArrayList<Directory> dirs = new ArrayList<>(List.of(root));
         root.children().forEach(node -> {
             if (node instanceof Directory directory) {
                 dirs.addAll(findAllDirectories(directory));
@@ -82,66 +73,73 @@ public class Day07 implements Day {
     }
 
     static class Commands {
-        sealed interface Command permits GoBack, GoToDirectory, GoToRoot, ListedDirectory, ListedFile, ListNodes {
-            Directory update(Directory pwd);
-        }
-
-        record ListNodes() implements Command {
-            @Override
-            public Directory update(final Directory pwd) {
-                return pwd;
-            }
-        }
-
-        record ListedFile(String name, long size) implements Command {
-
-            @Override
-            public Directory update(final Directory pwd) {
-                pwd.children().add(new File(name, size));
-                return pwd;
-            }
-        }
-
-        record ListedDirectory(String name) implements Command {
-
-            @Override
-            public Directory update(final Directory pwd) {
-                final var directory = new Directory(name, new ArrayList<>(), pwd);
-                pwd.children().add(directory);
-                return pwd;
-            }
-        }
-
-        record GoBack() implements Command {
-
-            @Override
-            public Directory update(final Directory pwd) {
-                return pwd.parent();
-            }
-        }
-
-        record GoToDirectory(String dir) implements Command {
-
-            @Override
-            public Directory update(final Directory pwd) {
-                return (Directory) pwd.children().stream().filter(node -> node.name().equals(dir)).findFirst().orElseThrow();
-            }
+        sealed interface Command permits GoToRoot, GoBack, GoToDirectory, ListNodes, ListedDirectory, ListedFile {
+            Directory processCommand(Directory workingDirectory);
         }
 
         record GoToRoot() implements Command {
 
             @Override
-            public Directory update(final Directory pwd) {
-                Directory root = pwd;
+            public Directory processCommand(Directory workingDirectory) {
+                Directory root = workingDirectory;
                 while (root.parent() != null) {
                     root = root.parent();
                 }
                 return root;
             }
         }
+
+        record GoBack() implements Command {
+
+            @Override
+            public Directory processCommand(Directory workingDirectory) {
+                return workingDirectory.parent();
+            }
+        }
+
+        record GoToDirectory(String dir) implements Command {
+
+            @Override
+            public Directory processCommand(Directory workingDirectory) {
+                return (Directory) workingDirectory.children().stream().filter(node -> node.name().equals(dir)).findFirst().orElseThrow();
+            }
+        }
+
+        record ListNodes() implements Command {
+
+            @Override
+            public Directory processCommand(Directory workingDirectory) {
+                return workingDirectory;
+            }
+        }
+
+        record ListedDirectory(String name) implements Command {
+
+            @Override
+            public Directory processCommand(Directory workingDirectory) {
+                Directory directory = new Directory(name, new ArrayList<>(), workingDirectory);
+                workingDirectory.children().add(directory);
+                return workingDirectory;
+            }
+
+        }
+
+        record ListedFile(String name, long size) implements Command {
+
+            @Override
+            public Directory processCommand(Directory workingDirectory) {
+                workingDirectory.children().add(new File(name, size));
+                return workingDirectory;
+            }
+        }
+
     }
 
     static class FileSystem {
+        sealed interface Node permits File, Directory {
+            String name();
+        }
+
         record Directory(String name, List<Node> children, Directory parent) implements Node {
             private long calculateSize() {
                 return children.stream().map(child -> switch (child) {
@@ -151,20 +149,16 @@ public class Day07 implements Day {
             }
 
             public String toString() {
-                return "dir %s %s".formatted(name, children.stream().map(Node::name).collect(Collectors.toSet()));
+                return "dir %s".formatted(name);
             }
         }
 
         record File(String name, long size) implements Node {
             public String toString() {
-                return "%s %d".formatted(name, size);
+                return "file %s %d".formatted(name, size);
             }
         }
 
-        sealed interface Node permits File, Directory {
-
-            String name();
-        }
     }
 
 }

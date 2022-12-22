@@ -1,6 +1,7 @@
 package io.github.frellibb.adventofcode2022;
 
 import io.github.frellibb.ListUtils;
+import io.github.frellibb.core.BasicResult;
 import io.github.frellibb.core.Day;
 import io.github.frellibb.core.Result;
 
@@ -28,17 +29,10 @@ public class Day05 implements Day {
         final var crateLines = cratesAndInstructions.get(0);
         final List<Instruction> instructions = cratesAndInstructions.get(1).stream().map(Instruction::from).toList();
 
-        return new Result() {
-            @Override
-            public Object part1() {
-                return crateMover9000(parseCrateStacks(crateLines), instructions);
-            }
+        final var part1 = crateMover9000(parseCrateStacks(crateLines), instructions);
+        final var part2 = crateMover9001(parseCrateStacks(crateLines), instructions);
 
-            @Override
-            public Object part2() {
-                return crateMover9001(parseCrateStacks(crateLines), instructions);
-            }
-        };
+        return new BasicResult(part1, part2);
     }
 
     private String crateMover9001(final Map<Integer, Stack<Character>> crates, final List<Instruction> instructions) {
