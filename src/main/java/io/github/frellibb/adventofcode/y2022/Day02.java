@@ -1,17 +1,17 @@
-package io.github.frellibb.adventofcode2022;
+package io.github.frellibb.adventofcode.y2022;
 
-import io.github.frellibb.core.Day;
+import io.github.frellibb.adventofcode.core.Day;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static io.github.frellibb.adventofcode2022.Day02.Hand.PAPER;
-import static io.github.frellibb.adventofcode2022.Day02.Hand.ROCK;
-import static io.github.frellibb.adventofcode2022.Day02.Hand.SCISSORS;
-import static io.github.frellibb.adventofcode2022.Day02.Outcome.DRAW;
-import static io.github.frellibb.adventofcode2022.Day02.Outcome.LOSE;
-import static io.github.frellibb.adventofcode2022.Day02.Outcome.WIN;
+import static io.github.frellibb.adventofcode.y2022.Day02.Hand.PAPER;
+import static io.github.frellibb.adventofcode.y2022.Day02.Hand.ROCK;
+import static io.github.frellibb.adventofcode.y2022.Day02.Hand.SCISSORS;
+import static io.github.frellibb.adventofcode.y2022.Day02.Outcome.DRAW;
+import static io.github.frellibb.adventofcode.y2022.Day02.Outcome.LOSE;
+import static io.github.frellibb.adventofcode.y2022.Day02.Outcome.WIN;
 
 public class Day02 implements Day {
 
@@ -97,7 +97,7 @@ public class Day02 implements Day {
         }
     }
 
-    record Result(int part1Score, int part2Score) implements io.github.frellibb.core.Result {
+    record Result(int part1Score, int part2Score) implements io.github.frellibb.adventofcode.core.Result {
         public Result add(Result other) {
             return new Result(part1Score + other.part1Score, part2Score + other.part2Score);
         }

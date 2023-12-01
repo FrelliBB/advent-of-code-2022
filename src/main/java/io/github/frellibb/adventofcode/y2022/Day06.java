@@ -1,8 +1,8 @@
-package io.github.frellibb.adventofcode2022;
+package io.github.frellibb.adventofcode.y2022;
 
-import io.github.frellibb.core.BasicResult;
-import io.github.frellibb.core.Day;
-import io.github.frellibb.core.Result;
+import io.github.frellibb.adventofcode.core.BasicResult;
+import io.github.frellibb.adventofcode.core.Day;
+import io.github.frellibb.adventofcode.core.Result;
 
 import java.util.ArrayDeque;
 import java.util.List;

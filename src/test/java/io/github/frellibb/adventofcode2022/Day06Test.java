@@ -1,6 +1,7 @@
 package io.github.frellibb.adventofcode2022;
 
-import io.github.frellibb.core.Day;
+import io.github.frellibb.adventofcode.y2022.Day06;
+import io.github.frellibb.adventofcode.core.Day;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

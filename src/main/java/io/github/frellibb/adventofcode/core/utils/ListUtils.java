@@ -1,4 +1,4 @@
-package io.github.frellibb;
+package io.github.frellibb.adventofcode.core.utils;
 
 import java.util.ArrayList;
 import java.util.List;

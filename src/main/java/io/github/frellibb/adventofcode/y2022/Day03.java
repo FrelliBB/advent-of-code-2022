@@ -1,7 +1,7 @@
-package io.github.frellibb.adventofcode2022;
+package io.github.frellibb.adventofcode.y2022;
 
-import io.github.frellibb.ListUtils;
-import io.github.frellibb.core.Day;
+import io.github.frellibb.adventofcode.core.utils.ListUtils;
+import io.github.frellibb.adventofcode.core.Day;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class Day03 implements Day {
             .reduce(new Result(0, 0), Result::add);
     }
 
-    record Result(int duplicateItemPriority, int groupBadgePriority) implements io.github.frellibb.core.Result {
+    record Result(int duplicateItemPriority, int groupBadgePriority) implements io.github.frellibb.adventofcode.core.Result {
         public Result add(Result other) {
             return new Result(
                 duplicateItemPriority + other.duplicateItemPriority,

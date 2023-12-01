@@ -1,11 +1,11 @@
-package io.github.frellibb.adventofcode2022;
+package io.github.frellibb.adventofcode.y2022;
 
-import io.github.frellibb.core.Day;
+import io.github.frellibb.adventofcode.core.Day;
 
 import java.util.List;
 
-import static io.github.frellibb.ListUtils.mapListEntries;
-import static io.github.frellibb.ListUtils.splitListByPredicate;
+import static io.github.frellibb.adventofcode.core.utils.ListUtils.mapListEntries;
+import static io.github.frellibb.adventofcode.core.utils.ListUtils.splitListByPredicate;
 import static java.util.Collections.reverseOrder;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
@@ -20,7 +20,7 @@ public class Day01 implements Day {
             .collect(collectingAndThen(toList(), Result::new));
     }
 
-    record Result(List<Elf> elves) implements io.github.frellibb.core.Result {
+    record Result(List<Elf> elves) implements io.github.frellibb.adventofcode.core.Result {
 
         public Integer getTotalCaloriesHeldByTopNElves(int n) {
             return elves.stream()

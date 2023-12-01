@@ -1,15 +1,15 @@
-package io.github.frellibb.adventofcode2022;
+package io.github.frellibb.adventofcode.y2022;
 
-import io.github.frellibb.adventofcode2022.Day07.Commands.Command;
-import io.github.frellibb.adventofcode2022.Day07.Commands.GoToDirectory;
-import io.github.frellibb.adventofcode2022.Day07.Commands.GoToRoot;
-import io.github.frellibb.adventofcode2022.Day07.Commands.ListedDirectory;
-import io.github.frellibb.adventofcode2022.Day07.Commands.ListedFile;
-import io.github.frellibb.adventofcode2022.Day07.FileSystem.Directory;
-import io.github.frellibb.adventofcode2022.Day07.FileSystem.File;
-import io.github.frellibb.core.BasicResult;
-import io.github.frellibb.core.Day;
-import io.github.frellibb.core.Result;
+import io.github.frellibb.adventofcode.y2022.Day07.Commands.Command;
+import io.github.frellibb.adventofcode.y2022.Day07.Commands.GoToDirectory;
+import io.github.frellibb.adventofcode.y2022.Day07.Commands.GoToRoot;
+import io.github.frellibb.adventofcode.y2022.Day07.Commands.ListedDirectory;
+import io.github.frellibb.adventofcode.y2022.Day07.Commands.ListedFile;
+import io.github.frellibb.adventofcode.y2022.Day07.FileSystem.Directory;
+import io.github.frellibb.adventofcode.y2022.Day07.FileSystem.File;
+import io.github.frellibb.adventofcode.core.BasicResult;
+import io.github.frellibb.adventofcode.core.Day;
+import io.github.frellibb.adventofcode.core.Result;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +50,8 @@ public class Day07 implements Day {
             case "$ cd /" -> new GoToRoot();
             case "$ cd .." -> new Commands.GoBack();
             case "$ ls" -> new Commands.ListNodes();
-            case String st && s.startsWith("$ cd ") -> new GoToDirectory(st.split(" ")[2]);
-            case String st && st.startsWith("dir") -> new ListedDirectory(st.split(" ")[1]);
+            case String st when st.startsWith("$ cd ") -> new GoToDirectory(st.split(" ")[2]);
+            case String st when st.startsWith("dir") -> new ListedDirectory(st.split(" ")[1]);
             case String st -> new ListedFile(st.split(" ")[1], Long.parseLong(st.split(" ")[0]));
         }).map(record -> (Command) record).toList();
 

@@ -1,5 +1,6 @@
 package io.github.frellibb;
 
+import io.github.frellibb.adventofcode.core.utils.ListUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

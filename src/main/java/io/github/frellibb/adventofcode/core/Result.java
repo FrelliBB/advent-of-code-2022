@@ -1,4 +1,4 @@
-package io.github.frellibb.core;
+package io.github.frellibb.adventofcode.core;
 
 public interface Result {
 
